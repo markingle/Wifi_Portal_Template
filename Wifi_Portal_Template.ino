@@ -17,6 +17,7 @@ Check the passcode from the keypad input. Send it to the REST API for checking w
 #include <WiFiSTA.h>
 #include <WiFiType.h>
 #include <WiFiUdp.h>
+#include <WebServer.h>
 
 #include <stdio.h>
 #include <string.h>
@@ -38,7 +39,18 @@ Check the passcode from the keypad input. Send it to the REST API for checking w
 #include <WiFiMulti.h>
 WiFiMulti wifiMulti;
 
+WebServer server (80);
+
+
+unsigned int state;
+
 #define USE_SPIFFS      true
+
+
+#define SEQUENCE_IDLE 0x00
+#define GET_SAMPLE 0x10
+
+#define DBG_OUTPUT_PORT Serial
 
 #if USE_SPIFFS
 #include <SPIFFS.h>
@@ -61,7 +73,7 @@ FS* filesystem =      &FFat;
 #define LED_OFF           LOW
 
 // SSID and PW for Config Portal
-String ssid = "Porchster";
+String ssid = "ESP_CONFIG_PORTAL";
 const char* password = "123456";
 
 // SSID and PW for your Router
@@ -70,8 +82,8 @@ String Router_Pass;
 
 // From v1.1.0
 // You only need to format the filesystem once
-#define FORMAT_FILESYSTEM       true
-//#define FORMAT_FILESYSTEM         false
+//#define FORMAT_FILESYSTEM       true
+#define FORMAT_FILESYSTEM         false
 
 #define MIN_AP_PASSWORD_SIZE    8
 
@@ -203,8 +215,6 @@ int locked_flag = 0;
 
 WiFiClient wifiClient;
 
-ESP_WiFiManager ESP_wifiManager;
-
 // wifi manager
 
 uint8_t connectMultiWiFi(void);
@@ -239,6 +249,59 @@ void check_WiFi(void)
     connectMultiWiFi();
   }
 }
+
+
+
+void handleRoot() {
+  server.send(200, "text/html", "<h1>You are connected</h1>");
+}
+
+String getContentType(String filename){
+  if(server.hasArg("download")) return "application/octet-stream";
+  else if(filename.endsWith(".htm")) return "text/html";
+  else if(filename.endsWith(".html")) return "text/html";
+  else if(filename.endsWith(".css")) return "text/css";
+  else if(filename.endsWith(".js")) return "application/javascript";
+  else if(filename.endsWith(".png")) return "image/png";
+  else if(filename.endsWith(".gif")) return "image/gif";
+  else if(filename.endsWith(".jpg")) return "image/jpeg";
+  else if(filename.endsWith(".ico")) return "image/x-icon";
+  else if(filename.endsWith(".xml")) return "text/xml";
+  else if(filename.endsWith(".pdf")) return "application/x-pdf";
+  else if(filename.endsWith(".zip")) return "application/x-zip";
+  else if(filename.endsWith(".gz")) return "application/x-gzip";
+  else if(filename.endsWith(".svg")) return "image/svg+xml";
+  return "text/plain";
+}
+
+bool handleFileRead(String path){
+  DBG_OUTPUT_PORT.println("handleFileRead: " + path);
+  if(path.endsWith("/"))
+    {
+      path += "relay.html";
+      state = SEQUENCE_IDLE;
+      File file = SPIFFS.open(path, "r");
+      Serial.print("Sending relay.html ");
+      Serial.print(path);
+      String contentType = getContentType(path);
+      size_t sent = server.streamFile(file, contentType);
+      file.close();
+      return true;
+    }
+  
+  String pathWithGz = path + ".gz";
+  DBG_OUTPUT_PORT.println("PathFile: " + pathWithGz);
+  if(SPIFFS.exists(pathWithGz) || SPIFFS.exists(path)){
+    if(SPIFFS.exists(pathWithGz))
+      path += ".gz";
+    File file = SPIFFS.open(path, "r");
+    //size_t sent = server.streamFile(file, contentType);
+    file.close();
+    return true;
+  }
+  return false;
+}
+
 
 //call check functions
 void check_status(void)
@@ -485,9 +548,7 @@ void setup() {
   digitalWrite(RELAY_SWITCH, LOW);
   digitalWrite(LOCK_SENSOR, HIGH);
 
-  Serial.begin(9600);
-  Serial2.begin(9600, SERIAL_8N1, 15, 4);
-  Serial2.print("My Serial started!");
+  Serial.begin(115200);
 
   digitalWrite(RELAY_SWITCH, LOW);
 
@@ -660,6 +721,17 @@ void setup() {
   }
   else
     Serial.println(ESP_wifiManager.getStatus(WiFi.status()));
+ server.on("/", HTTP_GET, [](){
+    handleFileRead("/");
+ });
+  //Handle when user requests a file that does not exist
+  server.onNotFound([](){
+    if(!handleFileRead(server.uri()))
+  server.send(404, "text/plain", "FileNotFound");
+  });
+  server.begin();
+  Serial.println("HTTP server started");
+
 }
 
 //setup is complete, loop indefinitely to check for inputs and signals to unlock
@@ -673,15 +745,7 @@ void loop() {
     Serial.print("Wifi Connected....");
   }
 
-  //Check scanner
-  recvWithEndMarker();
-
-  //Check keypad
-  check_keypad();
-
-  //Check is Porchster door was open without known event
-  //checkdoor();
-  int reading = digitalRead(LOCK_SENSOR);
+  server.handleClient();
 
   
   check_status();

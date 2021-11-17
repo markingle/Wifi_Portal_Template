@@ -1,0 +1,641 @@
+<!DOCtype html>
+<html>
+
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, user-scalable=no"/>
+    <title>Photosensor Switch</title>
+     <style type="text/css">
+
+     	input[type=range]::-webkit-slider-thumb {
+
+			-webkit-appearance: none;
+  			border: 1px solid #000000;
+  			height: 50px;
+  			width: 25px;
+  			border-radius: 3px;
+  			background: #ffffff;
+  			cursor: pointer;
+  			margin-top: -14px; /* You need to specify a margin in Chrome, but in Firefox and IE it is automatic */
+  			box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d; /* Add cool effects to your sliders! */
+		}
+
+        input[type=range]::-ms-track {
+  			height: 100%;
+  			width: 100%;
+  			cursor: pointer;
+  		}
+
+          /* misc start */
+          *{
+               margin:0px;
+               padding:0px
+          }
+          
+          body{
+               font-family:"Lucida Sans Unicode", "Lucida Grande", sans-serif;
+          }
+          
+          h3{
+          	font-size: 30px;
+          }
+          .media1140px{
+               background-color:#CE9429;
+          }
+          
+          .media768px{
+               background-color:#EDD49A;
+          }
+          
+          .media480px{
+               background-color:#EFEF34;
+          }
+          
+          .media300px{
+               background-color:#82EAFF;
+          }
+          
+          .media1140px, .media768px, .media480px, .media300px{
+               padding:15px;
+          }
+          
+          p{
+               margin:0 0 20px 0;
+          }
+          
+          .clearb{
+               clear:both;
+          }
+          /* misc end */
+          
+          /* header start */
+          #mainHeader{
+               background-color:#82EAFF;
+               padding:0.5em;
+               overflow:auto;
+          }
+           
+          /* to make our logo resize automatically */
+          #responsiveLogo{
+               width:100%;
+          }
+          
+          #responsiveLogo img{
+               max-height: 100%;
+               max-width: 100%;
+          }
+          /* header end */
+          
+          /* navigation start */
+          nav{
+               float:left;
+               width:100%;
+          }
+          
+          nav ul{
+               list-style-type:none;
+               padding:0;
+          }
+ 
+          nav ul li{
+          
+          }
+ 
+          nav ul li a{
+               background-color:green;
+               border:thin solid #fff;
+               color:#fff;
+               display:block;
+               height:3em;
+               line-height:3em;
+               text-align:center;
+               text-decoration:none;
+               width:100%;
+          }
+          
+          nav ul li a:hover{
+               background-color:yellow;
+               color:#000;
+          }
+          /* navigation end */
+          
+          /* middle section start */
+          #mainSection{
+               background-color: #D9F8F2;
+               float: left;
+               width: 96%;
+          }
+          
+          #sideBox1{
+               background-color: #C9A449;
+               width: 96%;
+          }
+          
+          #mainSection, #sideBox1{
+               overflow: auto;
+               padding:2%;
+          }
+          /* middle section end */
+          
+          
+          
+          /* footer start */
+          footer{
+               background-color:orange;
+               height:50px;
+               line-height:50px;
+               text-align:center;
+               width:100%;
+          }
+          /* footer end */
+	
+	#centerapp { 
+		width: 100%; 
+		margin: 0 auto; 
+	}
+	
+    .container {
+        width: 100%;
+        margin: 0 auto;
+        text-align: center;
+    	}
+
+    .gauge {
+        width: 450px;
+        height: 450px;
+    	}
+	
+	button {
+		position: relative;
+		background-color: #4CAF50;
+		border: none;
+		font-size: 18px;
+		color: #FFFF00;
+		padding: 20px;
+		width: 100%;
+		-webkit-user-select: none;
+		vertical-align: middle;
+		text-align: center;
+		text-decoration: none;
+		overflow: hidden;
+		cursor: pointer;
+		}
+	
+
+	.switch {
+		  position: relative;
+		  display: inline-block;
+		  width: 60px;
+		  height: 34px;
+		}
+
+	.switch input { 
+		  opacity: 0;
+		  width: 0;
+		  height: 0;
+		}
+
+	.slider {
+		  position: absolute;
+		  cursor: pointer;
+		  top: 0;
+		  left: 0;
+		  right: 0;
+		  bottom: 0;
+		  background-color: #ccc;
+		  -webkit-transition: .4s;
+		  transition: .4s;
+		}
+
+	.slider:before {
+		  position: absolute;
+		  content: "";
+		  height: 26px;
+		  width: 26px;
+		  left: 4px;
+		  bottom: 4px;
+		  background-color: white;
+		  -webkit-transition: .4s;
+		  transition: .4s;
+		}
+
+	input:checked + .slider {
+		  background-color: #2196F3;
+		}
+
+	input:focus + .slider {
+		  box-shadow: 0 0 1px #2196F3;
+		}
+
+	input:checked + .slider:before {
+		  -webkit-transform: translateX(26px);
+		  -ms-transform: translateX(26px);
+		  transform: translateX(26px);
+		}
+	.slider-height100{
+		  height: 100px;
+	}
+
+	/* Rounded sliders */
+	.slider.round {
+	  border-radius: 34px;
+	}
+
+	.slider.round:before {
+	  border-radius: 50%;
+	}
+
+	/* On off button css settings.  URL is https://proto.io/freebies/onoff/ */
+	.onoffswitch {
+    position: relative; width: 160px;
+    -webkit-user-select:none; -moz-user-select:none; -ms-user-select: none;
+	}
+	.onoffswitch-checkbox {
+	    display: none;
+	}
+	.onoffswitch-label {
+	    display: block; overflow: hidden; cursor: pointer;
+	    border: 2px solid #999999; border-radius: 20px;
+	}
+	.onoffswitch-inner {
+	    display: block; width: 200%; margin-left: -100%;
+	    transition: margin 0.3s ease-in 0s;
+	}
+	.onoffswitch-inner:before, .onoffswitch-inner:after {
+	    display: block; float: left; width: 50%; height: 50px; padding: 0; line-height: 50px;
+	    font-size: 40px; color: white; font-family: Trebuchet, Arial, sans-serif; font-weight: bold;
+	    box-sizing: border-box;
+	}
+	.onoffswitch-inner:before {
+	    content: "NC";
+	    padding-left: 2px;
+	    background-color: #34A7C1; color: #FFFFFF;
+	}
+	.onoffswitch-inner:after {
+	    content: "NC";
+	    padding-right: 5px;
+	    background-color: #EEEEEE; color: #999999;
+	    text-align: right;
+	}
+	.onoffswitch-switch {
+	    display: block; width: 41px; margin: 4.5px;
+	    background: #FFFFFF;
+	    position: absolute; top: 0; bottom: 0;
+	    right: 79px;
+	    border: 2px solid #999999; border-radius: 20px;
+	    transition: all 0.3s ease-in 0s; 
+	}
+	.onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-inner {
+	    margin-left: 0;
+	}
+	.onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-switch {
+	    right: 0px; 
+	}
+	/*______________________________________________________________________*/
+
+    </style>
+</head>
+
+<body>
+	
+	<div id="centerapp" ><b>Photosensor Config Web App</b>
+	<!--<div class="container" style="float:left; width:50%; height:100%;">
+	<div id="g1" class="gauge" style="width:100px; height:80px"></div>-->
+	<!--<button id="I" class="button" type="button">TIMER ON/OFF</button>-->
+	<br>
+	<center>
+	<!--
+	<label class="switch">
+		  <input type="checkbox" style="-webkit-appearance; width:60%; height:150%;" name="onoff_switch" id="onoff_switch_id" value="checked" onclick="sendSwitchState()">
+		  <span class="slider"></span>
+	</label>
+	<div class="onoffswitch">
+    <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="onoff_switch_id" onclick="sendSwitchState()">
+    <label class="onoffswitch-label" for="onoff_switch_id">
+        <span class="onoffswitch-inner"></span>
+        <span class="onoffswitch-switch"></span>
+    </label>
+	</div>
+	-->
+	<h3>
+	Photo Sensor Sunlight Reading:
+  	<input type="text" style="-webkit-appearance; -webkit-slider-thumb; width:60%; height:150%; name="countdown" id="countdown_id" value="0">
+	</h3>
+
+	</center>
+	<br><br>
+	<!--<button id="M" class="button" type="button">Future Use</button>
+	<button id="L" class="button" type="button">Future Use</button>
+	<button id="R" class="button" type="button">Future Use</button>
+	<button id="T" class="button" type="button">Future Use</button>-->
+	<!--</div> -->
+	<!-- <div style="float:right; width:50%; height:300px;"> 
+	<canvas id="field" width="400" height="400">
+    </canvas>-->
+    <div style="background: #999;">
+    <h2>Set the value for turning appliance ON and OFF</h2>
+	<label for="on_time">Photosensor Settings</label>
+	<p>
+
+	<hr>
+
+	<label for="on_time">Full Sun</label>
+	
+	<h2> On: <input type="range" orient="horizontal" style="-webkit-appearance; -webkit-slider-thumb; width:60%; height:150%;  -webkit-background-color: rgba(0, 0, 255, 0.4);" name="fullsun_on_time" id="fullsun_ontime_id" value="0" min="0" max="400" oninput="document.getElementById('fullsun_on_parm').innerText = parseInt(this.value);fullsun_on_parm=parseInt(this.value)" onchange="sendSetting()">
+    
+      <!--<h2>A = <input type="range" id="value1" name="parM_choose" min="1" max="9" value="1" step="1" oninput="document.getElementById('parM').innerText = parseInt(this.value);parM=parseInt(this.value)"> -->
+	<output name="show_fullsun_on_val" id="fullsun_on_parm">0</output></h2>
+	</p>	
+    <p>
+    <h2> Off/PS On: <input type="range" orient="horizontal" style="-webkit-appearance; -webkit-slider-thumb; width:60%; height:150%;" name="fullsun_off_time" id="fullsun_offtime_id" value="0" min="0" max="400" oninput="document.getElementById('fullsun_off_parm').innerText = parseInt(this.value);fullsun_off_parm=parseInt(this.value)" onchange="sendSetting()">
+     <!--<h2>Off Time <input type="range" id="value2" min="1" max="9" value="2" step="1" oninput="document.getElementById('parN').innerText = parseInt(this.value);parN=parseInt(this.value)">-->
+   <output name="show_fullsun_off_val" id="fullsun_off_parm">0</output></h2>
+
+    <hr>
+
+   <label for="on_time">Partial Sun</label>
+
+   <!--<h2> On: <input type="range" orient="horizontal" style="-webkit-appearance; -webkit-slider-thumb; width:60%; height:150%;" name="partsun_on_time" id="partsun_ontime_id" value="0" min="0" max="400" oninput="document.getElementById('partsun_on_parm').innerText = parseInt(this.value);partsun_on_parm=parseInt(this.value)" onchange="sendTime()">
+    
+      <h2>A = <input type="range" id="value1" name="parM_choose" min="1" max="9" value="1" step="1" oninput="document.getElementById('parM').innerText = parseInt(this.value);parM=parseInt(this.value)">
+	<output name="show_partsun_on_val" id="partsun_on_parm">0</output></h2>-->
+	</p>	
+    <p>
+    <h2> Off/NS On: <input type="range" orient="horizontal" style="-webkit-appearance; -webkit-slider-thumb; width:60%; height:150%;" name="partsun_off_time" id="partsun_offtime_id" value="0" min="0" max="400" oninput="document.getElementById('partsun_off_parm').innerText = parseInt(this.value);partsun_off_parm=parseInt(this.value)" onchange="sendSetting()">
+     <!--<h2>Off Time <input type="range" id="value2" min="1" max="9" value="2" step="1" oninput="document.getElementById('parN').innerText = parseInt(this.value);parN=parseInt(this.value)">-->
+   <output name="show_partsun_off_val" id="partsun_off_parm">0</output></h2>
+
+     <hr>
+
+   <label for="on_time">No Sun</label>
+
+   <!--<h2> On: <input type="range" orient="horizontal" style="-webkit-appearance; -webkit-slider-thumb; width:60%; height:150%;" name="nosun_on_time" id="nosun_ontime_id" value="0" min="0" max="400" oninput="document.getElementById('nosun_on_parm').innerText = parseInt(this.value);nosun_on_parm=parseInt(this.value)" onchange="sendTime()">
+    
+      <h2>A = <input type="range" id="value1" name="parM_choose" min="1" max="9" value="1" step="1" oninput="document.getElementById('parM').innerText = parseInt(this.value);parM=parseInt(this.value)">
+	<output name="show_nosun_on_val" id="nosun_on_parm">0</output></h2>-->
+	</p>	
+    <p>
+    <h2> Off: <input type="range" orient="horizontal" style="-webkit-appearance; -webkit-slider-thumb; width:60%; height:150%;" name="nosun_off_time" id="nosun_offtime_id" value="0" min="0" max="400" oninput="document.getElementById('nosun_off_parm').innerText = parseInt(this.value);nosun_off_parm=parseInt(this.value)" onchange="sendSetting()">
+     <!--<h2>Off Time <input type="range" id="value2" min="1" max="9" value="2" step="1" oninput="document.getElementById('parN').innerText = parseInt(this.value);parN=parseInt(this.value)">-->
+   <output name="show_nosun_off_val" id="nosun_off_parm">0</output></h2>
+
+    </p>
+	
+	
+	<!--<script src="raphael-2.1.4.min.js"></script>-->
+    <!--<script src="justgage.js"></script>-->
+	<script type="text/javascript">
+	
+	var g1;
+	var A0;
+	A0 = 0;
+   	document.addEventListener("DOMContentLoaded", function(event) {
+		console.log("DOM fully loaded and parsed");
+       	/*g1 = new JustGage({
+           	id: "g1",
+           	decimals: true,
+    	    value: A0,
+       	    min: 0,
+	        max: 12,
+			donut: false,
+			pointer: true,
+			gaugeWidthScale: 0.6,
+			counter: true,
+            hideInnerShadow: true,
+			title: "Voltage",
+			titlePosition: "below",
+			customSectors : [{"lo":0,"hi":4,"color":"#ff0000"},
+				{"lo":5,"hi":8,"color":"#ffff00"},
+				{"lo":9,"hi":12,"color":"#00cc00"}]
+			});*/
+    	});
+
+	window.addEventListener("load", addListeners); 
+		
+	touchStartI = function(e) 
+	{
+	console.log("#ID");
+	connection.send("#ID");
+	}
+		
+	touchEndI = function(e)
+	{
+	var lastTouchEnd = 0;
+	var now = (new Date()).getTime();
+	if (now - lastTouchEnd <= 300) 
+	{
+		event.preventDefault();
+	}
+		lastTouchEnd = now;
+		console.log("#IU");
+		connection.send("#IU");
+	}
+
+	touchStartM = function(e)
+	{
+		console.log("#MD");
+		connection.send("#MD");
+	}
+		
+	touchEndM = function(e) 
+	{
+		console.log("#MU");
+		connection.send("#MU");
+	}
+
+	touchStartL = function(e)
+	{
+		console.log("#LD");
+		connection.send("#LD");
+	}
+		
+	touchEndL = function(e)
+	{
+		console.log("#LU");
+		connection.send("#LU");
+	}
+
+	touchStartR = function(e)
+	{
+		console.log("#RD");
+		connection.send("#RD");
+	}
+		
+	touchEndR = function(e)
+	{
+		console.log("#RU");
+		connection.send("#RU");
+	}
+
+	function addListeners()
+	{
+		
+		// ***  Need to address this error before you can use buttons in this code.....
+		//---> [Violation] Added non-passive event listener to a scroll-blocking 'touchstart' event. Consider marking event handler as 'passive' to make the page more responsive. See https://www.chromestatus.com/feature/5745543795965952 <---
+
+		//document.getElementById('C').addEventListener("touchstart", touchStartC);
+		//document.getElementById('C').addEventListener("touchend", touchEndC);
+		//document.getElementById('I').addEventListener("touchstart", touchStartI);
+		//document.getElementById('I').addEventListener("touchend", touchEndI);
+
+		//document.getElementById('M').addEventListener("touchstart", touchStartM);
+		//document.getElementById('M').addEventListener("touchend", touchEndM);
+
+		//document.getElementById('L').addEventListener("touchstart", touchStartL);
+		//document.getElementById('L').addEventListener("touchend", touchEndL);
+
+			//document.getElementById('T').addEventListener("touchstart", touchStart1);
+			//document.getElementById('T').addEventListener("touchend", touchEnd1);
+
+			//document.getElementById('speed_id').addEventListener("change", throttle);
+		
+	}
+	// This code is based on https://github.com/AdySan/ESP8266_WebSockets_NeoPixels/blob/master/data/index.htm
+	function sendTime(){
+	  	var FS_ontime = parseInt(document.getElementById('fullsun_ontime_id').value).toString();
+		var FSPS_on_off_time = parseInt(document.getElementById('fullsun_offtime_id').value).toString(); //Full Sun and Partial Sun setting are the same...off setting for Full Sun is on setting for Parial Sun.
+		var PSNS_on_off_time = parseInt(document.getElementById('partsun_offtime_id').value).toString(); //Partial Sun and No Sun setting are the same...off setting for Parial Sun is on setting for No Sun.
+		var NS_off_time = parseInt(document.getElementById('nosun_offtime_id').value).toString(); 
+
+		//if(ontime.length < 2) { r = '0' + r; }   
+		//if(offtime.length < 2) { g = '0' + g; }     
+		//if(ontime == 'NaN') {r = '00'; }
+		//if(offtime == 'NaN') {g = '00'; }
+		var ontime = '+' + ontime;    
+		console.log('on time: ' + ontime); 
+		connection.send(ontime);
+		var offtime = '-' + offtime;    
+		console.log('off time: ' + offtime); 
+		connection.send(offtime);
+
+	}
+
+	// This code is based on https://github.com/AdySan/ESP8266_WebSockets_NeoPixels/blob/master/data/index.htm
+	function sendSetting(){
+	  	var FS_on_setting = parseInt(document.getElementById('fullsun_ontime_id').value).toString();
+		var FSPS_on_off_setting = parseInt(document.getElementById('fullsun_offtime_id').value).toString(); //Full Sun and Partial Sun setting are the same...off setting for Full Sun is on setting for Parial Sun.
+		var PSNS_on_off_setting = parseInt(document.getElementById('partsun_offtime_id').value).toString(); //Partial Sun and No Sun setting are the same...off setting for Parial Sun is on setting for No Sun.
+		var NS_off_setting = parseInt(document.getElementById('nosun_offtime_id').value).toString(); 
+
+		//if(ontime.length < 2) { r = '0' + r; }   
+		//if(offtime.length < 2) { g = '0' + g; }     
+		//if(ontime == 'NaN') {r = '00'; }
+		//if(offtime == 'NaN') {g = '00'; }
+		//var ontime = '+' + ontime;    
+		//console.log('on setting: ' + on_setting); 
+		//connection.send(on_setting);
+		//var offtime = '-' + offtime;    
+		//console.log('off setting: ' + off_setting); 
+		//connection.send(off_setting);
+		// Construct a msg object containing the data the server needs to process the message from the chat client.
+		var msg = {
+    			FS_On: FS_on_setting,
+		    	FS_Off: FSPS_on_off_setting,
+		    	PS_On: FSPS_on_off_setting,
+		    	PS_Off: PSNS_on_off_setting,
+		    	NS_On: PSNS_on_off_setting,
+		    	NS_Off: NS_off_setting,
+		  };
+		connection.send(JSON.stringify(msg));
+		console.log('hello');
+		console.log(msg);
+		console.log('goodbye');
+
+	}
+
+	function sendSwitchState(){
+		var isChecked = document.getElementById('onoff_switch_id').checked; 
+		//var onoff_switch = 's'
+		console.log(isChecked);
+		if (isChecked){
+			var state = 'O' + 'N';
+			console.log('onoff state: ' + state); 
+			connection.send(state);
+		} else {
+		var state = 'O' + 'FF';
+		console.log('onoff state: ' + state); 
+		connection.send(state);
+		}
+	}
+	
+
+    </script>
+    <script type="text/javascript">
+	
+	var connection = new WebSocket('ws://'+location.hostname+':81/', ['arduino']);
+	//var connection = new WebSocket('ws://192.168.4.1:81/', ['arduino']);
+	connection.onopen = function () {  connection.send('I'); };
+	console.log("temp connection opened");
+	// Connection opened
+	//connection.addEventListener('open', (event) => {
+	//  connection.send('Hello Server!');
+	//  console.log("temp connection opened");
+	//});
+	connection.onerror = function (error) { console.log('WebSocket Error ', error); };
+	connection.onmessage = function (ev)
+		{ 
+
+			var json_msg = JSON.parse(ev.data);
+			var msg_type = json_msg.message_type;
+			console.log('Message Type: ', msg_type);
+
+			switch (msg_type)
+			{
+				case "startup":
+					var FS_On_Setting = json_msg.FS_On;
+					var FS_Off_Setting = json_msg.FS_Off;
+					var PS_On_Setting = json_msg.PS_On;
+					var PS_Off_Setting = json_msg.PS_Off;
+					var NS_On_Setting = json_msg.NS_On;
+					var NS_Off_Setting = json_msg.NS_Off;
+
+					var ontime = json_msg.ontime;
+					var offtime = json_msg.offtime;
+
+					console.log('Startup State: ', FS_On_Setting);
+					console.log('Setting ON Time: ', ontime);
+					
+					console.log("Full Sun On Setting");
+					document.getElementById("fullsun_ontime_id").value = FS_On_Setting;
+					document.getElementById('fullsun_on_parm').innerText = FS_On_Setting;
+					console.log('--------');
+					console.log('Full Sun Off Setting: ', FS_Off_Setting);
+					document.getElementById("fullsun_offtime_id").value = FS_Off_Setting;
+					document.getElementById('fullsun_off_parm').innerText = FS_Off_Setting;
+					console.log('--------');
+					console.log("Partial Sun Off Setting");
+					document.getElementById("partsun_offtime_id").value = PS_Off_Setting;
+					document.getElementById('partsun_off_parm').innerText = PS_Off_Setting;
+					console.log('--------');
+					console.log("No Sun Off Setting");
+					document.getElementById("nosun_offtime_id").value = NS_Off_Setting;
+					document.getElementById('nosun_off_parm').innerText = NS_Off_Setting;
+					console.log('--------');
+
+			
+					if(ontime > 0)
+						{
+							document.getElementById("ontime_id").value = ontime;
+							document.getElementById('parM').innerText = ontime;
+							console.log('Setting ON Time: ', ontime);
+						}
+
+					if(offtime > 0)
+						{
+							document.getElementById("offtime_id").value = offtime;
+							document.getElementById('parN').innerText = offtime;
+							console.log('Setting OFF Time: ', offtime);
+						}
+				case "clock_update":
+					console.log("Clock Update");
+					console.log('Time Count :', json_msg.value);
+					var timer_count = json_msg.value;
+					document.getElementById("countdown_id").value = timer_count;
+			}
+			
+	 	};
+
+    </script>
+</body>
+
+</html>
